@@ -1,7 +1,4 @@
-import { MongoNetworkError } from "mongodb";
 import mongoose from "mongoose";
-import { type } from "os";
-
 const userSchema = new mongoose.Schema(
     {
         username: {
@@ -15,6 +12,7 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String,
             required: true,
+            unique: true,
         },
     },
     { timestamps: true }
