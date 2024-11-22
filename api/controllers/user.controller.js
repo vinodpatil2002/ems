@@ -68,3 +68,13 @@ export const signin = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const signout = (req, res) => {
+    try {
+        res.clearCookie("access_token")
+            .status(200)
+            .json({ message: "Signout successfully" });
+    } catch (error) {
+        console.log(error);
+    }
+};
