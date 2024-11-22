@@ -1,4 +1,4 @@
-import expess from "express";
+import express from "express";
 import {
     createEmployee,
     getEmployees,

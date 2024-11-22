@@ -1,13 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 import userRouter from "./routes/user.route.js";
 import employeeRouter from "./routes/employee.route.js";
 import path from "path";
 dotenv.config();
 
 mongoose
-    .connect(process.env.MONGO)
+    .connect(process.env.MONGO_URL)
     .then(() => {
         console.log("Connected to MongoDB 🚀");
     })
