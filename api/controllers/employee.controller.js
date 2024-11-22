@@ -2,10 +2,14 @@ import Employee from "../models/employee.model.js";
 
 export const createEmployee = async (req, res) => {
     try {
-        const employee = Employee.create(req.body);
-        return res.status(201).json(employee);
+        const employee = await Employee.create(req.body);
+        return res.status(201).json({
+            message: "Employee Created Successfully",
+            employee: employee,
+        });
     } catch (error) {
         console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" }); // Add error response
     }
 };
 
