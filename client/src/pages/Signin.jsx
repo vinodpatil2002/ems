@@ -1,68 +1,89 @@
-import React, { useState } from "react";
+// import React from 'react'
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    signInStart,
+    signInSuccess,
+    signInFailure,
+} from "../redux/user/userSlice";
 
-const Signin = () => {
+function SignIn() {
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+    });
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({});
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const { loading, error } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value,
+        });
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          setLoading(true);
-          setError(null);
-          const res = await fetch('api/user/signin',{
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
-          const data = await res.json();
-          if(data.success === false){
-            setError(data.message);
-            setLoading(false);
-            return;
-          }
-          setLoading(false);
-          setError(null);
-          navigate('/');
+            dispatch(signInStart());
+            const res = await fetch("/api/user/signin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await res.json();
+            if (data.success === false) {
+                dispatch(signInFailure(data.message));
+                return;
+            }
+            dispatch(signInSuccess(data));
+            navigate("/");
         } catch (error) {
-            setError(error.response.data || error.message);
-            setLoading(false);
+            // console.log(error);
+            dispatch(signInFailure("Something went wrong"));
         }
     };
     return (
-        <div className="p-3 max-w-lg mx-auto">
-            <h1 className="text-3xl font-semibold text-center my-7">Sign In</h1>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <div className="p-3 max-w-xl mx-auto">
+            <h1 className="text-3xl text-center font-bold my-7">Sign In</h1>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4  ">
                 <input
+                    onChange={handleChange}
                     type="text"
-                    className="border p-3 rounded-lg"
                     placeholder="username"
-                    onChange={handleChange}
+                    className="border p-3 rounded-lg "
+                    id="username"
                 />
                 <input
-                    type="password"
-                    className="border p-3 rounded-lg"
-                    placeholder="password"
                     onChange={handleChange}
+                    type="password"
+                    placeholder="password"
+                    className="border p-3 rounded-lg "
+                    id="password"
                 />
-                <button className="text-white bg-slate-700 hover:opacity-95 rounded-lg p-3 uppercase">
-                    Sign In
+                <button
+                    disabled={loading}
+                    className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+                >
+                    {loading ? "Loading..." : "Sign In"}
                 </button>
             </form>
-            <div className="flex gap-3 mt-3">
-                <p>Don't have an account</p>
-                <Link to="/sign-up">
-                    <span className="text-blue-500">Sign Up</span>
+            <div className="flex gap-2 mt-5">
+                <p>Dont have an Account?</p>
+                <Link to={"/sign-up"}>
+                    <span className="text-blue-700 hover:underline">
+                        Sign Up
+                    </span>
                 </Link>
             </div>
+            {error && <p className="text-red-500 mt-4">{error}</p>}
         </div>
     );
-};
+}
 
-export default Signin;
+export default SignIn;
+
+// 1:58:55
