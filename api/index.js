@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 import userRouter from "./routes/user.route.js";
 import employeeRouter from "./routes/employee.route.js";
 import path from "path";
@@ -33,7 +33,7 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || "Internal Server Error";
     return res.status(statusCode).json({ success: false, message, statusCode });
