@@ -33,6 +33,8 @@ const employeeSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true,
+        default:
+            "https://i.pinimg.com/originals/e8/a9/4f/e8a94f0e187fdd3cf46de390dbce58f0.jpg",
     },
     createdDate: {
         type: Date,

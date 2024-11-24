@@ -6,10 +6,18 @@ import {
     signOutSuccess,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
     const { currentUser } = useSelector((state) => state.user);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleEmployee = () => {
+        navigate("/add-employee");
+    };
+    const handleViewEmployee = () => {
+        navigate("/employees");
+    };
     const handleSignout = async () => {
         try {
             dispatch(signOutStart());
@@ -43,12 +51,24 @@ const Profile = () => {
                     className="border p-3 rounded-lg"
                     value={currentUser.email}
                 />
-                <span
+                <button
+                    onClick={handleEmployee}
+                    className="text-white bg-green-700 p-3 rounded-lg cursor-pointer hover:opacity-90"
+                >
+                    Add Employee
+                </button>
+                <button
+                    onClick={handleViewEmployee}
+                    className="text-white bg-slate-700 p-3 rounded-lg cursor-pointer hover:opacity-90"
+                >
+                    View Employees
+                </button>
+                <button
                     onClick={handleSignout}
-                    className="text-red-700 cursor-pointer hover:underline"
+                    className="text-white bg-red-700 p-3 rounded-lg cursor-pointer hover:opacity-90"
                 >
                     Sign Out
-                </span>
+                </button>
             </form>
         </div>
     );
