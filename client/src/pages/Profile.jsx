@@ -44,12 +44,12 @@ const Profile = () => {
                 <input
                     type="text"
                     className="border p-3 rounded-lg"
-                    value={currentUser.username}
+                    defaultValue={currentUser.username}
                 />
                 <input
                     type="email"
                     className="border p-3 rounded-lg"
-                    value={currentUser.email}
+                    defaultValue={currentUser.email}
                 />
                 <button
                     onClick={handleEmployee}

@@ -6,9 +6,12 @@ import {
     uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const AddEmployee = () => {
+    const navigate = useNavigate();
     const [file, setFile] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -21,6 +24,7 @@ const AddEmployee = () => {
     // console.log(file);
     console.log(formData);
     const [uploading, setUploading] = useState(false);
+    const [error, setError] = useState(false);
     const [imageUploadError, setImageUploadError] = useState(false);
     const storeImage = async (file) => {
         return new Promise((resolve, reject) => {
@@ -67,13 +71,47 @@ const AddEmployee = () => {
                 setUploading(false);
             });
     };
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value,
+        });
+    };
+
+    const handleAddEmployee = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            setError(false);
+            const res = await fetch("/api/employee/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await res.json();
+            if (data.error) {
+                setError(data.error);
+            }
+            console.log(data);
+            setLoading(false);
+            navigate(`/employees`);
+        } catch (error) {
+            setError(error.message);
+            setLoading(false);
+        }
+    };
 
     return (
         <main className="p-3 max-w-4xl mx-auto">
             <h1 className="text-3xl font-semibold text-center my-7">
                 Add Employee
             </h1>
-            <form action="" className="flex flex-col sm:flex-row gap-4">
+            <form
+                onSubmit={handleAddEmployee}
+                className="flex flex-col sm:flex-row gap-4"
+            >
                 <div className="flex flex-col gap-4 flex-1">
                     <input
                         type="text"
@@ -83,6 +121,7 @@ const AddEmployee = () => {
                         maxLength={62}
                         minLength={6}
                         required
+                        onChange={handleChange}
                     />
                     <input
                         type="email"
@@ -90,6 +129,7 @@ const AddEmployee = () => {
                         className="border p-3 rounded-lg"
                         id="email"
                         required
+                        onChange={handleChange}
                     />
                     <input
                         type="number"
@@ -97,6 +137,7 @@ const AddEmployee = () => {
                         className="border p-3 rounded-lg"
                         id="mobile"
                         required
+                        onChange={handleChange}
                     />
                     <div className="">
                         <div className="flex flex-col gap-3">
@@ -106,6 +147,7 @@ const AddEmployee = () => {
                                 id="designation"
                                 className="border p-3 rounded-lg"
                                 required
+                                onChange={handleChange}
                             >
                                 <option value="">Designation</option>
                                 <option value="HR">HR</option>
@@ -123,6 +165,7 @@ const AddEmployee = () => {
                                         name="gender"
                                         value={"M"}
                                         className="w-5"
+                                        onChange={handleChange}
                                     />
                                     <span>Male</span>
                                 </div>
@@ -133,6 +176,7 @@ const AddEmployee = () => {
                                         name="gender"
                                         value={"F"}
                                         className="w-5"
+                                        onChange={handleChange}
                                     />
                                     <span>Female</span>
                                 </div>
@@ -148,6 +192,7 @@ const AddEmployee = () => {
                                         name="course"
                                         value={"MCA"}
                                         className="w-5"
+                                        onChange={handleChange}
                                     />
                                     <span>MCA</span>
                                 </div>
@@ -158,6 +203,7 @@ const AddEmployee = () => {
                                         name="course"
                                         value={"BCA"}
                                         className="w-5"
+                                        onChange={handleChange}
                                     />
                                     <span>BCA</span>
                                 </div>
@@ -168,6 +214,7 @@ const AddEmployee = () => {
                                         name="course"
                                         value={"BSC"}
                                         className="w-5"
+                                        onChange={handleChange}
                                     />
                                     <span>BSC</span>
                                 </div>
@@ -216,7 +263,7 @@ const AddEmployee = () => {
                                         ...formData,
                                         image: "",
                                     });
-                                }} 
+                                }}
                                 className="p-3 bg-red-700 text-white rounded-lg uppercase hover:opacity-90"
                                 type="button"
                             >
