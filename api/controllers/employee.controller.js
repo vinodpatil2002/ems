@@ -4,8 +4,7 @@ export const createEmployee = async (req, res) => {
     try {
         const employee = await Employee.create(req.body);
         return res.status(201).json({
-            message: "Employee Created Successfully",
-            employee: employee,
+            employee,
         });
     } catch (error) {
         console.error(error);
