@@ -10,7 +10,7 @@
 - Authentication Feature: ✅
 - CRUD Employees Feautre: ✅
 - Storing Images in buckets(Firebase-storage): ✅
-- Searching Feature: Building
+- Searching Feature: ⌛(building)
 
 ## Installation
 
