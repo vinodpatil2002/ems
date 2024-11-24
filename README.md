@@ -6,6 +6,12 @@
 - **Frontend**: React
 - **Storage**: Firebase (Storage)
 
+## Features:
+- Authentication Feature: ✅
+- CRUD Employees Feautre: ✅
+- Storing Images in buckets(Firebase-storage): ✅
+- Searching Feature: Building
+
 ## Installation
 
 ### 1. Fork the Repository
