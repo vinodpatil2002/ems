@@ -14,8 +14,11 @@
 
 ## Installation
 
-### 1. Fork the Repository
-- Fork this repository and clone it to your local machine.
+### 1. Clone the Repository
+- Clone this repository and clone it to your local machine.
+   ```
+   git clone https://github.com/vinodpatil2002/ems.git
+   ```
 
 ### 2. Install Dependencies
 
